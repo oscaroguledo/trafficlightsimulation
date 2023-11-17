@@ -1,0 +1,5 @@
+  the model contains 5 never claims: responseProperty4, responseProperty3, responseProperty2, responseProperty1, safetyConstraint
+  only one claim is used in a verification run
+  choose which one with ./pan -a -N name (defaults to -N safetyConstraint)
+  or use e.g.: spin -search -ltl safetyConstraint main.pml
+

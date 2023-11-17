@@ -5,9 +5,19 @@ chan signal_south = [1] of {mtype};
 chan signal_east = [1] of {mtype};
 chan signal_west = [1] of {mtype};
 
+// Code for the TrafficMonitor process...
 #define NorthSouthProceed (signal_north == PROCEED && signal_south == PROCEED)
 #define WestEastProceed (signal_west == PROCEED && signal_east == PROCEED)
 
+proctype TrafficMonitor() {
+    do
+    :: NorthSouthProceed || WestEastProceed ->
+        printf("Invariant violation: Conflicting traffic signals detected!\n");
+        assert(0); // Assertion failure on violation
+    od;
+}
+
+// 4 Traffic light processes...
 proctype NorthTrafficLight() {
     mtype ASPECT = PROCEED;  // Initial aspect is PROCEED
 
@@ -73,6 +83,7 @@ proctype WestTrafficLight() {
     od;
 }
 
+// Code for the CentralControl process...
 proctype CentralControl() {
     bool ns_green = true;
     do
@@ -95,12 +106,23 @@ proctype CentralControl() {
     od;
 }
 
+
+// LTL safety constraint properties
+ltl safetyConstraint { [](! (NorthSouthProceed || WestEastProceed)) }
+// response properties
+ltl responseProperty1 { [] (signal_north == PROCEED -> <> (signal_north == DANGER)) }
+ltl responseProperty2 { [] (signal_south == PROCEED -> <> (signal_south == DANGER)) }
+ltl responseProperty3 { [] (signal_east == PROCEED -> <> (signal_east == DANGER)) }
+ltl responseProperty4 { [] (signal_west == PROCEED -> <> (signal_west == DANGER)) }
+
+
 init {
     atomic {
         run NorthTrafficLight();
         run SouthTrafficLight();
         run EastTrafficLight();
         run WestTrafficLight();
+        run TrafficMonitor();
         run CentralControl();
     }
 }

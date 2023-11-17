@@ -1,0 +1,53 @@
+never safetyConstraint {    /* !([] (! ((((signal_north==PROCEED)) && ((signal_south==PROCEED))) || (((signal_west==PROCEED)) && ((signal_east==PROCEED)))))) */
+T0_init:
+	do
+	:: atomic { (! ((! ((((signal_north==PROCEED)) && ((signal_south==PROCEED))) || (((signal_west==PROCEED)) && ((signal_east==PROCEED))))))) -> assert(!(! ((! ((((signal_north==PROCEED)) && ((signal_south==PROCEED))) || (((signal_west==PROCEED)) && ((signal_east==PROCEED)))))))) }
+	:: (1) -> goto T0_init
+	od;
+accept_all:
+	skip
+}
+never responseProperty1 {    /* !([] ((! ((signal_north==PROCEED))) || (<> ((signal_north==DANGER))))) */
+T0_init:
+	do
+	:: (! ((! ((signal_north==PROCEED)))) && ! (((signal_north==DANGER)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! (((signal_north==DANGER)))) -> goto accept_S4
+	od;
+}
+never responseProperty2 {    /* !([] ((! ((signal_south==PROCEED))) || (<> ((signal_south==DANGER))))) */
+T0_init:
+	do
+	:: (! ((! ((signal_south==PROCEED)))) && ! (((signal_south==DANGER)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! (((signal_south==DANGER)))) -> goto accept_S4
+	od;
+}
+never responseProperty3 {    /* !([] ((! ((signal_east==PROCEED))) || (<> ((signal_east==DANGER))))) */
+T0_init:
+	do
+	:: (! ((! ((signal_east==PROCEED)))) && ! (((signal_east==DANGER)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! (((signal_east==DANGER)))) -> goto accept_S4
+	od;
+}
+never responseProperty4 {    /* !([] ((! ((signal_west==PROCEED))) || (<> ((signal_west==DANGER))))) */
+T0_init:
+	do
+	:: (! ((! ((signal_west==PROCEED)))) && ! (((signal_west==DANGER)))) -> goto accept_S4
+	:: (1) -> goto T0_init
+	od;
+accept_S4:
+	do
+	:: (! (((signal_west==DANGER)))) -> goto accept_S4
+	od;
+}
