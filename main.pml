@@ -109,6 +109,7 @@ proctype CentralControl() {
 
 // LTL safety constraint properties
 ltl safetyConstraint { [](! (NorthSouthProceed || WestEastProceed)) }
+
 // response properties
 ltl responseProperty1 { [] (signal_north == PROCEED -> <> (signal_north == DANGER)) }
 ltl responseProperty2 { [] (signal_south == PROCEED -> <> (signal_south == DANGER)) }
